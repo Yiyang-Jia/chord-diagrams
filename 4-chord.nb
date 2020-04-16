@@ -1,0 +1,91 @@
+k = 0;
+Clear[t1, t2, t3, t4, P];
+at = ConstantArray[0, 8];
+at[[1]] = 1;
+For[l1 = 2, l1 < 9, l1++,
+  at[[l1]] = 1;
+      t1[1, l1] = {1, l1};
+  If[l1 == 2, l2 = 3, l2 = 2];
+  at[[l2]] = 1;
+      For [l3 = l2 + 1, l3 < 9, l3++,
+       If [l3 != l1,
+     at[[l3]] = 1;
+           t2[l2, l3] = {l2, l3};
+     it = 0;
+     at[[l1]] = 1; at[[l2]] = 1; at[[l3]] = 1;
+     For  [kt = 1, kt < 9, kt++,
+      If [it == 0, l4 = kt];
+      If[at[[kt]] == 0, it = 1];
+      ];
+     at[[l4]] = 1;
+     For [l5 = l4 + 1, l5 < 9, l5++,
+          If [l5 != l1 && l5 != l2 && l5 != l3,
+              t3[l4, l5] = {l4, l5};
+        at[[l1]] = 1; at[[l2]] = 1; at[[l3]] = 1; at[[l4]] = 1; 
+        at[[l5]] = 1;
+        it = 0;
+        (**Print[at[[1]],at[[2]],at[[3]],at[[4]],at[[5]],at[[6]],at[[
+        7]]];**)
+        For  [kt = 1, kt < 9, kt++,
+         If [it == 0, l6 = kt];
+         If[at[[kt]] == 0, it = 1];
+         ];
+        at[[l6]] = 1;
+        For [l7 = l6 + 1, l7 < 9, l7++,
+             
+         If [l7 != l1 && l7 != l2 && l7 != l3 && l7 != l4 && 
+            l7 != l5,
+                 t4[l6, l7] = {l6, l7};
+           k = k + 1;
+           (**Print[" k = ",k,"  ", l1,l2,l3,l4,l5,l6,l7];**)
+        
+              Pairs[k] = {t1[1, l1], t2[l2, l3], t3[l4, l5], 
+             t4[l6, l7]};
+           at = ConstantArray[0, 8]; at[[1]] = 1;
+           ];];];];];];];
+
+adj = ConstantArray[0, {105, 4, 4}];(*adjacency matrix*)
+
+edgeAndtriangle = 
+  ConstantArray[
+   0, {105, 1, 2}];(*list of {# of edges, # of triangles}*)
+For[c = 1,
+  c < 106, c++,
+ For[i = 1, i < 5, i++,
+  For[j = i + 1, j < 5, j++,
+    crossingtemp = 0;
+    temp1 = Pairs[c][[i]][[2]];
+    temp2 = Pairs[c][[j]][[1]];
+    temp3 = Pairs[c][[j]][[2]];
+    If[temp1 > temp2, crossingtemp = crossingtemp + 1];
+    If[temp1 > temp3, crossingtemp = crossingtemp + 1];
+    crossingtemp = Mod[crossingtemp, 2];
+    adj[[c, i, j]] = crossingtemp;
+    ];];
+ adj[[c]] = adj[[c]] + Transpose[adj[[c]]];
+ edge = 1/2 Tr[adj[[c]].adj[[c]]];
+ triangle = 1/6 Tr[adj[[c]].adj[[c]].adj[[c]]];
+ edgeAndtriangle[[c]] = {edge, triangle}; 
+ ]
+
+
+EandTstat = Table[{e, 0}, {e, 0, 6}]; For[c = 1, c < 106, c++,
+ e = edgeAndtriangle[[c, 1]];
+ t = edgeAndtriangle[[c, 2]];
+ EandTstat[[e + 1, 2]] = EandTstat[[e + 1, 2]] + t;]
+
+
+EandTstat
+
+{{0, 0}, {1, 0}, {2, 0}, {3, 8}, {4, 8}, {5, 8}, {6, 4}}
+
+evencount = 0;
+oddcount = 0;
+Do[evencount = evencount + EandTstat[[i, 2]], {i, 1, 7, 2}]
+Do[oddcount = oddcount + EandTstat[[i, 2]], {i, 2, 7, 2}]
+evencount
+oddcount
+
+12
+
+16
