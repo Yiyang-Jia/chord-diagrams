@@ -1,0 +1,3684 @@
+k = 0;
+Clear[t1, t2, t3, t4, t5, t6, Pairs, Dyck, probe];
+p = 7;
+twop = 2 p;
+Dyck = ConstantArray[0, {(twop - 1)!!, twop}];
+probe = ConstantArray[0, {(twop - 1)!!, p, twop}];
+at = ConstantArray[0, twop];
+at[[1]] = 1;
+For[l1 = 2, l1 < twop + 1, l1++,
+  at[[l1]] = 1;
+      t1[1, l1] = {1, l1};
+  If[l1 == 2, l2 = 3, l2 = 2];
+  at[[l2]] = 1;
+      For [l3 = l2 + 1, l3 < twop + 1, l3++,
+       If [l3 != l1,
+     at[[l3]] = 1;
+           t2[l2, l3] = {l2, l3};
+     it = 0;
+     at[[l1]] = 1; at[[l2]] = 1; at[[l3]] = 1;
+     For  [kt = 1, kt < twop + 1, kt++,
+      If [it == 0, l4 = kt];
+      If[at[[kt]] == 0, it = 1];
+      ];
+     at[[l4]] = 1;
+     For [l5 = l4 + 1, l5 < twop + 1, l5++,
+          If [l5 != l1 && l5 != l2 && l5 != l3,
+              t3[l4, l5] = {l4, l5};
+        at[[l1]] = 1; at[[l2]] = 1; at[[l3]] = 1; at[[l4]] = 1; 
+        at[[l5]] = 1;
+        it = 0;
+        (**Print[at[[1]],at[[2]],at[[3]],at[[4]],at[[5]],at[[6]],at[[
+        7]]];**)
+        For  [kt = 1, kt < twop + 1, kt++,
+         If [it == 0, l6 = kt];
+         If[at[[kt]] == 0, it = 1];
+         ];
+        at[[l6]] = 1;
+        For [l7 = l6 + 1, l7 < twop + 1, l7++,
+             
+         If [l7 != l1 && l7 != l2 && l7 != l3 && l7 != l4 && 
+            l7 != l5,
+                 t4[l6, l7] = {l6, l7};
+           at[[l1]] = 1; at[[l2]] = 1; at[[l3]] = 1; at[[l4]] = 1; 
+           at[[l5]] = 1; at[[l6]] = 1; at[[l7]] = 1;
+           it = 0;
+           For  [kt = 1, kt < twop + 1, kt++,
+            If [it == 0, l8 = kt];
+            If[at[[kt]] == 0, it = 1];
+            ];
+           at[[l8]] = 1;
+           For [l9 = l8 + 1, l9 < twop + 1, l9++,
+                
+            If [l9 != l1 && l9 != l2 && l9 != l3 && l9 != l4 && 
+               l9 != l5 && l9 != l6 && l9 != l7,
+                    t5[l8, l9] = {l8, l9};
+              at[[l1]] = 1; at[[l2]] = 1; at[[l3]] = 1; at[[l4]] = 1; 
+              at[[l5]] = 1; at[[l6]] = 1; at[[l7]] = 1; at[[l8]] = 1; 
+              at[[l9]] = 1;
+              it = 0;
+              For  [kt = 1, kt < twop + 1, kt++,
+               If [it == 0, l10 = kt];
+               If[at[[kt]] == 0, it = 1];
+               ];
+              at[[l10]] = 1;
+              For [l11 = l10 + 1, l11 < twop + 1, l11++,
+                
+               If [l11 != l1 && l11 != l2 && l11 != l3 && l11 != l4 &&
+                   l11 != l5 && l11 != l6 && l11 != l7 && l11 != l8 &&
+                   l11 != l9,
+                       t6[l10, l11] = {l10, l11};
+                 at[[l1]] = 1; at[[l2]] = 1; at[[l3]] = 1; 
+                 at[[l4]] = 1; at[[l5]] = 1; at[[l6]] = 1; 
+                 at[[l7]] = 1; at[[l8]] = 1; at[[l9]] = 1; 
+                 at[[l10]] = 1; at[[l11]] = 1;
+                 it = 0;
+                 For  [kt = 1, kt < twop + 1, kt++,
+                  If [it == 0, l12 = kt];
+                  If[at[[kt]] == 0, it = 1];
+                  ];
+                 at[[l12]] = 1;
+                 For [l13 = l12 + 1, l13 < twop + 1, l13++,
+                   
+                  If [l13 != l1 && l13 != l2 && l13 != l3 && 
+                    l13 != l4 && l13 != l5 && l13 != l6 && l13 != l7 &&
+                     l13 != l8 && l13 != l9 && l13 != l10 && 
+                    l13 != l11,
+                          t7[l12, l13] = {l12, l13};
+                    k = k + 1;
+                    (**Print[" k = ",k,"  ", l1,l2,l3,l4,l5,l6,l7];**)
+
+                                        
+                    Pairs[k] = {t1[1, l1], t2[l2, l3], t3[l4, l5], 
+                    t4[l6, l7], t5[l8, l9],  t6[l10, l11], 
+                    t7[l12, l13]};
+                    For[i = 1, i < twop + 1, i++,
+                    dktemp = 0;
+                    For[j = 1, j < p + 1, j++,
+                    
+                    If[Pairs[k][[j]][[1]] <= i < Pairs[k][[j]][[2]], 
+                    dktemp = dktemp + 1];
+                    
+                    If[Pairs[k][[j]][[1]] <= i < Pairs[k][[j]][[2]], 
+                    probe[[k, j, i]] = 1];
+                    ];
+                    Dyck[[k, i]] = dktemp;
+                    ];
+                    For[i = 1, i < twop + 1, i++,
+                    dktemp = 0;
+                    For[j = 1, j < p + 1, j++,
+                    
+                    If[Pairs[k][[j]][[1]] <= i < Pairs[k][[j]][[2]], 
+                    dktemp = dktemp + 1];
+                    ];
+                    Dyck[[k, i]] = dktemp;
+                    ];
+                    at = ConstantArray[0, twop]; at[[1]] = 1;
+                    ];];];];];];];];];];];];];
+k
+(twop - 1)!!
+possiblePaths = DeleteDuplicates[Dyck];
+Length[possiblePaths]
+Binomial[twop, p]/(p + 1)
+
+135135
+
+135135
+
+429
+
+429
+
+adj = ConstantArray[0, {(twop - 1)!!, p, p}];(*adjacency matrix*)
+
+edgeAndtriangle = 
+  ConstantArray[
+   0, {(twop - 1)!!, 1, 2}];(*list of {# of edges, # of triangles}*)
+
+For[c = 1, c < (twop - 1)!! + 1, c++,
+  For[i = 1, i < p + 1, i++,
+   For[j = i + 1, j < p + 1, j++,
+     crossingtemp = 0;
+     temp1 = Pairs[c][[i]][[2]];
+     temp2 = Pairs[c][[j]][[1]];
+     temp3 = Pairs[c][[j]][[2]];
+     If[temp1 > temp2, crossingtemp = crossingtemp + 1];
+     If[temp1 > temp3, crossingtemp = crossingtemp + 1];
+     crossingtemp = Mod[crossingtemp, 2];
+     adj[[c, i, j]] = crossingtemp;
+     ];];
+  adj[[c]] = adj[[c]] + Transpose[adj[[c]]];
+  edgeAndtriangle[[c]] = {1/2 Tr[adj[[c]].adj[[c]]], 
+    1/6 Tr[adj[[c]].adj[[c]].adj[[c]]]}; ];
+
+upMovingSumAllPaths = 0;
+downMovingSumAllPaths = 0;
+gradedTotSumAllPaths = 0;
+trianglecountAllPaths = 0;
+edgecountAllPaths = 0;
+gradededgecountAllPaths = 0;
+For[m = 1, m < Length[possiblePaths] + 1, m++,
+  pathnumbers = ConstantArray[0, twop];
+  trianglecount = 0;
+  edgecount = 0;
+  gradedPathnumbers = ConstantArray[0, twop];
+  gradededgecount = 0;
+  upMovingSum = 0;
+  downMovingSum = 0;
+  gradedTotSum = 0;
+  For[k = 1, k < (twop - 1)!! + 1, k++,
+   If[Dyck[[k]] == possiblePaths[[m]],
+     For[i = 1, i < twop + 1, i++,
+      pathnumbers[[i]] = 
+       pathnumbers[[i]] + 
+        1/2 ({probe[[k, All, i]]}.adj[[
+             k]].Transpose[{probe[[k, All, i]]}])[[1, 1]];
+      gradedPathnumbers[[i]] = 
+       gradedPathnumbers[[
+         i]] + (-1)^(({probe[[k, All, 
+                 i]]}.Transpose[{probe[[k, All, i]]}])[[1, 1]] + 
+            edgeAndtriangle[[k, 1]])*1/
+         2 ({probe[[k, All, i]]}.adj[[
+             k]].Transpose[{probe[[k, All, i]]}])[[1, 1]];];
+     trianglecount = trianglecount + edgeAndtriangle[[k]][[2]];
+     edgecount = edgecount + edgeAndtriangle[[k]][[1]];
+     gradededgecount = 
+      gradededgecount + (-1)^(edgeAndtriangle[[k, 1]])*
+        edgeAndtriangle[[k, 1]];
+     ];];
+  For[i = 1, i < twop, i++,
+   If[possiblePaths[[m, i]] < possiblePaths[[m, i + 1]], 
+     upMovingSum = upMovingSum + pathnumbers[[i + 1]], 
+     downMovingSum = downMovingSum + pathnumbers[[i + 1]]]
+    ;];
+  gradedTotSum = Sum[gradedPathnumbers[[i]], {i, 1, twop}];
+  upMovingSumAllPaths = upMovingSumAllPaths + upMovingSum;
+  downMovingSumAllPaths = downMovingSumAllPaths + downMovingSum;
+  gradedTotSumAllPaths = gradedTotSumAllPaths + gradedTotSum;
+  trianglecountAllPaths = trianglecountAllPaths + trianglecount;
+  edgecountAllPaths = edgecountAllPaths + edgecount;
+  gradededgecountAllPaths = 
+   gradededgecountAllPaths + gradededgecount;
+  (*Print["DyckPath","(",m,")","=",possiblePaths[[m]]]
+  Print["PathNumbers","(",m,")","=",pathnumbers]
+  Print["EdgeCount","(",m,")","=",edgecount]
+  Print["TriangleCount","(",m,")","=",trianglecount]*)
+  
+  Print["UpMovingSum", "(", m, ")", "=", upMovingSum, " 3T+E=", 
+    3 trianglecount + edgecount]
+   Print["DownMovingSum", "(", m, ")", "=", downMovingSum, " 3T=", 
+    3 trianglecount]
+   (*Print["GradedPathNumbers","(",m,")","=",gradedPathnumbers]
+   Print["GradedEdgeCount","(",m,")","=",gradededgecount]*)
+   
+   Print["GradedTotSum", "(", m, ")", "=", gradedTotSum, 
+    " GradedEdgeCount=", gradededgecount]
+   Print[""]
+  ];
+Print["UpMovingSumAllPaths=", upMovingSumAllPaths, " 3T+E=", 
+ 3*trianglecountAllPaths + edgecountAllPaths]
+Print["DownMovingSumAllPaths=", downMovingSumAllPaths, " 3T=", 
+ 3*trianglecountAllPaths]
+Print["GradedTotSumAllPaths=", gradedTotSumAllPaths, " \
+GradededgecountAllPaths=", gradededgecountAllPaths]
+
+UpMovingSum(1)=0 3T+E=0
+
+DownMovingSum(1)=0 3T=0
+
+GradedTotSum(1)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(2)=1 3T+E=1
+
+DownMovingSum(2)=0 3T=0
+
+GradedTotSum(2)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(3)=1 3T+E=1
+
+DownMovingSum(3)=0 3T=0
+
+GradedTotSum(3)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(4)=4 3T+E=4
+
+DownMovingSum(4)=0 3T=0
+
+GradedTotSum(4)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(5)=12 3T+E=12
+
+DownMovingSum(5)=3 3T=3
+
+GradedTotSum(5)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(6)=1 3T+E=1
+
+DownMovingSum(6)=0 3T=0
+
+GradedTotSum(6)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(7)=4 3T+E=4
+
+DownMovingSum(7)=0 3T=0
+
+GradedTotSum(7)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(8)=4 3T+E=4
+
+DownMovingSum(8)=0 3T=0
+
+GradedTotSum(8)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(9)=12 3T+E=12
+
+DownMovingSum(9)=0 3T=0
+
+GradedTotSum(9)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(10)=30 3T+E=30
+
+DownMovingSum(10)=6 3T=6
+
+GradedTotSum(10)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(11)=12 3T+E=12
+
+DownMovingSum(11)=3 3T=3
+
+GradedTotSum(11)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(12)=30 3T+E=30
+
+DownMovingSum(12)=6 3T=6
+
+GradedTotSum(12)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(13)=63 3T+E=63
+
+DownMovingSum(13)=18 3T=18
+
+GradedTotSum(13)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(14)=120 3T+E=120
+
+DownMovingSum(14)=48 3T=48
+
+GradedTotSum(14)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(15)=1 3T+E=1
+
+DownMovingSum(15)=0 3T=0
+
+GradedTotSum(15)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(16)=4 3T+E=4
+
+DownMovingSum(16)=0 3T=0
+
+GradedTotSum(16)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(17)=4 3T+E=4
+
+DownMovingSum(17)=0 3T=0
+
+GradedTotSum(17)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(18)=12 3T+E=12
+
+DownMovingSum(18)=0 3T=0
+
+GradedTotSum(18)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(19)=30 3T+E=30
+
+DownMovingSum(19)=6 3T=6
+
+GradedTotSum(19)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(20)=4 3T+E=4
+
+DownMovingSum(20)=0 3T=0
+
+GradedTotSum(20)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(21)=12 3T+E=12
+
+DownMovingSum(21)=0 3T=0
+
+GradedTotSum(21)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(22)=12 3T+E=12
+
+DownMovingSum(22)=0 3T=0
+
+GradedTotSum(22)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(23)=32 3T+E=32
+
+DownMovingSum(23)=0 3T=0
+
+GradedTotSum(23)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(24)=72 3T+E=72
+
+DownMovingSum(24)=12 3T=12
+
+GradedTotSum(24)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(25)=30 3T+E=30
+
+DownMovingSum(25)=6 3T=6
+
+GradedTotSum(25)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(26)=72 3T+E=72
+
+DownMovingSum(26)=12 3T=12
+
+GradedTotSum(26)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(27)=144 3T+E=144
+
+DownMovingSum(27)=36 3T=36
+
+GradedTotSum(27)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(28)=264 3T+E=264
+
+DownMovingSum(28)=96 3T=96
+
+GradedTotSum(28)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(29)=12 3T+E=12
+
+DownMovingSum(29)=3 3T=3
+
+GradedTotSum(29)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(30)=30 3T+E=30
+
+DownMovingSum(30)=6 3T=6
+
+GradedTotSum(30)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(31)=30 3T+E=30
+
+DownMovingSum(31)=6 3T=6
+
+GradedTotSum(31)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(32)=72 3T+E=72
+
+DownMovingSum(32)=12 3T=12
+
+GradedTotSum(32)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(33)=144 3T+E=144
+
+DownMovingSum(33)=36 3T=36
+
+GradedTotSum(33)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(34)=63 3T+E=63
+
+DownMovingSum(34)=18 3T=18
+
+GradedTotSum(34)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(35)=144 3T+E=144
+
+DownMovingSum(35)=36 3T=36
+
+GradedTotSum(35)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(36)=270 3T+E=270
+
+DownMovingSum(36)=81 3T=81
+
+GradedTotSum(36)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(37)=468 3T+E=468
+
+DownMovingSum(37)=180 3T=180
+
+GradedTotSum(37)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(38)=120 3T+E=120
+
+DownMovingSum(38)=48 3T=48
+
+GradedTotSum(38)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(39)=264 3T+E=264
+
+DownMovingSum(39)=96 3T=96
+
+GradedTotSum(39)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(40)=468 3T+E=468
+
+DownMovingSum(40)=180 3T=180
+
+GradedTotSum(40)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(41)=768 3T+E=768
+
+DownMovingSum(41)=336 3T=336
+
+GradedTotSum(41)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(42)=1200 3T+E=1200
+
+DownMovingSum(42)=600 3T=600
+
+GradedTotSum(42)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(43)=1 3T+E=1
+
+DownMovingSum(43)=0 3T=0
+
+GradedTotSum(43)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(44)=4 3T+E=4
+
+DownMovingSum(44)=0 3T=0
+
+GradedTotSum(44)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(45)=4 3T+E=4
+
+DownMovingSum(45)=0 3T=0
+
+GradedTotSum(45)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(46)=12 3T+E=12
+
+DownMovingSum(46)=0 3T=0
+
+GradedTotSum(46)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(47)=30 3T+E=30
+
+DownMovingSum(47)=6 3T=6
+
+GradedTotSum(47)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(48)=4 3T+E=4
+
+DownMovingSum(48)=0 3T=0
+
+GradedTotSum(48)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(49)=12 3T+E=12
+
+DownMovingSum(49)=0 3T=0
+
+GradedTotSum(49)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(50)=12 3T+E=12
+
+DownMovingSum(50)=0 3T=0
+
+GradedTotSum(50)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(51)=32 3T+E=32
+
+DownMovingSum(51)=0 3T=0
+
+GradedTotSum(51)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(52)=72 3T+E=72
+
+DownMovingSum(52)=12 3T=12
+
+GradedTotSum(52)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(53)=30 3T+E=30
+
+DownMovingSum(53)=6 3T=6
+
+GradedTotSum(53)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(54)=72 3T+E=72
+
+DownMovingSum(54)=12 3T=12
+
+GradedTotSum(54)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(55)=144 3T+E=144
+
+DownMovingSum(55)=36 3T=36
+
+GradedTotSum(55)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(56)=264 3T+E=264
+
+DownMovingSum(56)=96 3T=96
+
+GradedTotSum(56)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(57)=4 3T+E=4
+
+DownMovingSum(57)=0 3T=0
+
+GradedTotSum(57)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(58)=12 3T+E=12
+
+DownMovingSum(58)=0 3T=0
+
+GradedTotSum(58)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(59)=12 3T+E=12
+
+DownMovingSum(59)=0 3T=0
+
+GradedTotSum(59)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(60)=32 3T+E=32
+
+DownMovingSum(60)=0 3T=0
+
+GradedTotSum(60)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(61)=72 3T+E=72
+
+DownMovingSum(61)=12 3T=12
+
+GradedTotSum(61)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(62)=12 3T+E=12
+
+DownMovingSum(62)=0 3T=0
+
+GradedTotSum(62)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(63)=32 3T+E=32
+
+DownMovingSum(63)=0 3T=0
+
+GradedTotSum(63)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(64)=32 3T+E=32
+
+DownMovingSum(64)=0 3T=0
+
+GradedTotSum(64)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(65)=80 3T+E=80
+
+DownMovingSum(65)=0 3T=0
+
+GradedTotSum(65)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(66)=168 3T+E=168
+
+DownMovingSum(66)=24 3T=24
+
+GradedTotSum(66)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(67)=72 3T+E=72
+
+DownMovingSum(67)=12 3T=12
+
+GradedTotSum(67)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(68)=168 3T+E=168
+
+DownMovingSum(68)=24 3T=24
+
+GradedTotSum(68)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(69)=324 3T+E=324
+
+DownMovingSum(69)=72 3T=72
+
+GradedTotSum(69)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(70)=576 3T+E=576
+
+DownMovingSum(70)=192 3T=192
+
+GradedTotSum(70)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(71)=30 3T+E=30
+
+DownMovingSum(71)=6 3T=6
+
+GradedTotSum(71)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(72)=72 3T+E=72
+
+DownMovingSum(72)=12 3T=12
+
+GradedTotSum(72)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(73)=72 3T+E=72
+
+DownMovingSum(73)=12 3T=12
+
+GradedTotSum(73)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(74)=168 3T+E=168
+
+DownMovingSum(74)=24 3T=24
+
+GradedTotSum(74)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(75)=324 3T+E=324
+
+DownMovingSum(75)=72 3T=72
+
+GradedTotSum(75)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(76)=144 3T+E=144
+
+DownMovingSum(76)=36 3T=36
+
+GradedTotSum(76)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(77)=324 3T+E=324
+
+DownMovingSum(77)=72 3T=72
+
+GradedTotSum(77)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(78)=594 3T+E=594
+
+DownMovingSum(78)=162 3T=162
+
+GradedTotSum(78)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(79)=1008 3T+E=1008
+
+DownMovingSum(79)=360 3T=360
+
+GradedTotSum(79)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(80)=264 3T+E=264
+
+DownMovingSum(80)=96 3T=96
+
+GradedTotSum(80)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(81)=576 3T+E=576
+
+DownMovingSum(81)=192 3T=192
+
+GradedTotSum(81)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(82)=1008 3T+E=1008
+
+DownMovingSum(82)=360 3T=360
+
+GradedTotSum(82)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(83)=1632 3T+E=1632
+
+DownMovingSum(83)=672 3T=672
+
+GradedTotSum(83)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(84)=2520 3T+E=2520
+
+DownMovingSum(84)=1200 3T=1200
+
+GradedTotSum(84)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(85)=12 3T+E=12
+
+DownMovingSum(85)=3 3T=3
+
+GradedTotSum(85)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(86)=30 3T+E=30
+
+DownMovingSum(86)=6 3T=6
+
+GradedTotSum(86)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(87)=30 3T+E=30
+
+DownMovingSum(87)=6 3T=6
+
+GradedTotSum(87)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(88)=72 3T+E=72
+
+DownMovingSum(88)=12 3T=12
+
+GradedTotSum(88)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(89)=144 3T+E=144
+
+DownMovingSum(89)=36 3T=36
+
+GradedTotSum(89)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(90)=30 3T+E=30
+
+DownMovingSum(90)=6 3T=6
+
+GradedTotSum(90)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(91)=72 3T+E=72
+
+DownMovingSum(91)=12 3T=12
+
+GradedTotSum(91)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(92)=72 3T+E=72
+
+DownMovingSum(92)=12 3T=12
+
+GradedTotSum(92)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(93)=168 3T+E=168
+
+DownMovingSum(93)=24 3T=24
+
+GradedTotSum(93)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(94)=324 3T+E=324
+
+DownMovingSum(94)=72 3T=72
+
+GradedTotSum(94)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(95)=144 3T+E=144
+
+DownMovingSum(95)=36 3T=36
+
+GradedTotSum(95)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(96)=324 3T+E=324
+
+DownMovingSum(96)=72 3T=72
+
+GradedTotSum(96)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(97)=594 3T+E=594
+
+DownMovingSum(97)=162 3T=162
+
+GradedTotSum(97)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(98)=1008 3T+E=1008
+
+DownMovingSum(98)=360 3T=360
+
+GradedTotSum(98)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(99)=63 3T+E=63
+
+DownMovingSum(99)=18 3T=18
+
+GradedTotSum(99)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(100)=144 3T+E=144
+
+DownMovingSum(100)=36 3T=36
+
+GradedTotSum(100)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(101)=144 3T+E=144
+
+DownMovingSum(101)=36 3T=36
+
+GradedTotSum(101)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(102)=324 3T+E=324
+
+DownMovingSum(102)=72 3T=72
+
+GradedTotSum(102)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(103)=594 3T+E=594
+
+DownMovingSum(103)=162 3T=162
+
+GradedTotSum(103)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(104)=270 3T+E=270
+
+DownMovingSum(104)=81 3T=81
+
+GradedTotSum(104)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(105)=594 3T+E=594
+
+DownMovingSum(105)=162 3T=162
+
+GradedTotSum(105)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(106)=1053 3T+E=1053
+
+DownMovingSum(106)=324 3T=324
+
+GradedTotSum(106)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(107)=1728 3T+E=1728
+
+DownMovingSum(107)=648 3T=648
+
+GradedTotSum(107)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(108)=468 3T+E=468
+
+DownMovingSum(108)=180 3T=180
+
+GradedTotSum(108)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(109)=1008 3T+E=1008
+
+DownMovingSum(109)=360 3T=360
+
+GradedTotSum(109)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(110)=1728 3T+E=1728
+
+DownMovingSum(110)=648 3T=648
+
+GradedTotSum(110)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(111)=2736 3T+E=2736
+
+DownMovingSum(111)=1152 3T=1152
+
+GradedTotSum(111)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(112)=4140 3T+E=4140
+
+DownMovingSum(112)=1980 3T=1980
+
+GradedTotSum(112)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(113)=120 3T+E=120
+
+DownMovingSum(113)=48 3T=48
+
+GradedTotSum(113)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(114)=264 3T+E=264
+
+DownMovingSum(114)=96 3T=96
+
+GradedTotSum(114)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(115)=264 3T+E=264
+
+DownMovingSum(115)=96 3T=96
+
+GradedTotSum(115)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(116)=576 3T+E=576
+
+DownMovingSum(116)=192 3T=192
+
+GradedTotSum(116)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(117)=1008 3T+E=1008
+
+DownMovingSum(117)=360 3T=360
+
+GradedTotSum(117)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(118)=468 3T+E=468
+
+DownMovingSum(118)=180 3T=180
+
+GradedTotSum(118)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(119)=1008 3T+E=1008
+
+DownMovingSum(119)=360 3T=360
+
+GradedTotSum(119)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(120)=1728 3T+E=1728
+
+DownMovingSum(120)=648 3T=648
+
+GradedTotSum(120)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(121)=2736 3T+E=2736
+
+DownMovingSum(121)=1152 3T=1152
+
+GradedTotSum(121)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(122)=768 3T+E=768
+
+DownMovingSum(122)=336 3T=336
+
+GradedTotSum(122)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(123)=1632 3T+E=1632
+
+DownMovingSum(123)=672 3T=672
+
+GradedTotSum(123)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(124)=2736 3T+E=2736
+
+DownMovingSum(124)=1152 3T=1152
+
+GradedTotSum(124)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(125)=4224 3T+E=4224
+
+DownMovingSum(125)=1920 3T=1920
+
+GradedTotSum(125)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(126)=6240 3T+E=6240
+
+DownMovingSum(126)=3120 3T=3120
+
+GradedTotSum(126)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(127)=1200 3T+E=1200
+
+DownMovingSum(127)=600 3T=600
+
+GradedTotSum(127)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(128)=2520 3T+E=2520
+
+DownMovingSum(128)=1200 3T=1200
+
+GradedTotSum(128)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(129)=4140 3T+E=4140
+
+DownMovingSum(129)=1980 3T=1980
+
+GradedTotSum(129)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(130)=6240 3T+E=6240
+
+DownMovingSum(130)=3120 3T=3120
+
+GradedTotSum(130)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(131)=9000 3T+E=9000
+
+DownMovingSum(131)=4800 3T=4800
+
+GradedTotSum(131)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(132)=12600 3T+E=12600
+
+DownMovingSum(132)=7200 3T=7200
+
+GradedTotSum(132)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(133)=1 3T+E=1
+
+DownMovingSum(133)=0 3T=0
+
+GradedTotSum(133)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(134)=4 3T+E=4
+
+DownMovingSum(134)=0 3T=0
+
+GradedTotSum(134)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(135)=4 3T+E=4
+
+DownMovingSum(135)=0 3T=0
+
+GradedTotSum(135)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(136)=12 3T+E=12
+
+DownMovingSum(136)=0 3T=0
+
+GradedTotSum(136)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(137)=30 3T+E=30
+
+DownMovingSum(137)=6 3T=6
+
+GradedTotSum(137)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(138)=4 3T+E=4
+
+DownMovingSum(138)=0 3T=0
+
+GradedTotSum(138)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(139)=12 3T+E=12
+
+DownMovingSum(139)=0 3T=0
+
+GradedTotSum(139)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(140)=12 3T+E=12
+
+DownMovingSum(140)=0 3T=0
+
+GradedTotSum(140)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(141)=32 3T+E=32
+
+DownMovingSum(141)=0 3T=0
+
+GradedTotSum(141)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(142)=72 3T+E=72
+
+DownMovingSum(142)=12 3T=12
+
+GradedTotSum(142)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(143)=30 3T+E=30
+
+DownMovingSum(143)=6 3T=6
+
+GradedTotSum(143)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(144)=72 3T+E=72
+
+DownMovingSum(144)=12 3T=12
+
+GradedTotSum(144)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(145)=144 3T+E=144
+
+DownMovingSum(145)=36 3T=36
+
+GradedTotSum(145)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(146)=264 3T+E=264
+
+DownMovingSum(146)=96 3T=96
+
+GradedTotSum(146)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(147)=4 3T+E=4
+
+DownMovingSum(147)=0 3T=0
+
+GradedTotSum(147)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(148)=12 3T+E=12
+
+DownMovingSum(148)=0 3T=0
+
+GradedTotSum(148)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(149)=12 3T+E=12
+
+DownMovingSum(149)=0 3T=0
+
+GradedTotSum(149)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(150)=32 3T+E=32
+
+DownMovingSum(150)=0 3T=0
+
+GradedTotSum(150)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(151)=72 3T+E=72
+
+DownMovingSum(151)=12 3T=12
+
+GradedTotSum(151)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(152)=12 3T+E=12
+
+DownMovingSum(152)=0 3T=0
+
+GradedTotSum(152)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(153)=32 3T+E=32
+
+DownMovingSum(153)=0 3T=0
+
+GradedTotSum(153)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(154)=32 3T+E=32
+
+DownMovingSum(154)=0 3T=0
+
+GradedTotSum(154)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(155)=80 3T+E=80
+
+DownMovingSum(155)=0 3T=0
+
+GradedTotSum(155)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(156)=168 3T+E=168
+
+DownMovingSum(156)=24 3T=24
+
+GradedTotSum(156)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(157)=72 3T+E=72
+
+DownMovingSum(157)=12 3T=12
+
+GradedTotSum(157)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(158)=168 3T+E=168
+
+DownMovingSum(158)=24 3T=24
+
+GradedTotSum(158)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(159)=324 3T+E=324
+
+DownMovingSum(159)=72 3T=72
+
+GradedTotSum(159)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(160)=576 3T+E=576
+
+DownMovingSum(160)=192 3T=192
+
+GradedTotSum(160)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(161)=30 3T+E=30
+
+DownMovingSum(161)=6 3T=6
+
+GradedTotSum(161)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(162)=72 3T+E=72
+
+DownMovingSum(162)=12 3T=12
+
+GradedTotSum(162)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(163)=72 3T+E=72
+
+DownMovingSum(163)=12 3T=12
+
+GradedTotSum(163)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(164)=168 3T+E=168
+
+DownMovingSum(164)=24 3T=24
+
+GradedTotSum(164)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(165)=324 3T+E=324
+
+DownMovingSum(165)=72 3T=72
+
+GradedTotSum(165)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(166)=144 3T+E=144
+
+DownMovingSum(166)=36 3T=36
+
+GradedTotSum(166)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(167)=324 3T+E=324
+
+DownMovingSum(167)=72 3T=72
+
+GradedTotSum(167)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(168)=594 3T+E=594
+
+DownMovingSum(168)=162 3T=162
+
+GradedTotSum(168)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(169)=1008 3T+E=1008
+
+DownMovingSum(169)=360 3T=360
+
+GradedTotSum(169)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(170)=264 3T+E=264
+
+DownMovingSum(170)=96 3T=96
+
+GradedTotSum(170)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(171)=576 3T+E=576
+
+DownMovingSum(171)=192 3T=192
+
+GradedTotSum(171)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(172)=1008 3T+E=1008
+
+DownMovingSum(172)=360 3T=360
+
+GradedTotSum(172)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(173)=1632 3T+E=1632
+
+DownMovingSum(173)=672 3T=672
+
+GradedTotSum(173)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(174)=2520 3T+E=2520
+
+DownMovingSum(174)=1200 3T=1200
+
+GradedTotSum(174)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(175)=4 3T+E=4
+
+DownMovingSum(175)=0 3T=0
+
+GradedTotSum(175)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(176)=12 3T+E=12
+
+DownMovingSum(176)=0 3T=0
+
+GradedTotSum(176)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(177)=12 3T+E=12
+
+DownMovingSum(177)=0 3T=0
+
+GradedTotSum(177)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(178)=32 3T+E=32
+
+DownMovingSum(178)=0 3T=0
+
+GradedTotSum(178)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(179)=72 3T+E=72
+
+DownMovingSum(179)=12 3T=12
+
+GradedTotSum(179)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(180)=12 3T+E=12
+
+DownMovingSum(180)=0 3T=0
+
+GradedTotSum(180)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(181)=32 3T+E=32
+
+DownMovingSum(181)=0 3T=0
+
+GradedTotSum(181)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(182)=32 3T+E=32
+
+DownMovingSum(182)=0 3T=0
+
+GradedTotSum(182)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(183)=80 3T+E=80
+
+DownMovingSum(183)=0 3T=0
+
+GradedTotSum(183)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(184)=168 3T+E=168
+
+DownMovingSum(184)=24 3T=24
+
+GradedTotSum(184)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(185)=72 3T+E=72
+
+DownMovingSum(185)=12 3T=12
+
+GradedTotSum(185)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(186)=168 3T+E=168
+
+DownMovingSum(186)=24 3T=24
+
+GradedTotSum(186)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(187)=324 3T+E=324
+
+DownMovingSum(187)=72 3T=72
+
+GradedTotSum(187)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(188)=576 3T+E=576
+
+DownMovingSum(188)=192 3T=192
+
+GradedTotSum(188)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(189)=12 3T+E=12
+
+DownMovingSum(189)=0 3T=0
+
+GradedTotSum(189)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(190)=32 3T+E=32
+
+DownMovingSum(190)=0 3T=0
+
+GradedTotSum(190)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(191)=32 3T+E=32
+
+DownMovingSum(191)=0 3T=0
+
+GradedTotSum(191)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(192)=80 3T+E=80
+
+DownMovingSum(192)=0 3T=0
+
+GradedTotSum(192)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(193)=168 3T+E=168
+
+DownMovingSum(193)=24 3T=24
+
+GradedTotSum(193)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(194)=32 3T+E=32
+
+DownMovingSum(194)=0 3T=0
+
+GradedTotSum(194)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(195)=80 3T+E=80
+
+DownMovingSum(195)=0 3T=0
+
+GradedTotSum(195)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(196)=80 3T+E=80
+
+DownMovingSum(196)=0 3T=0
+
+GradedTotSum(196)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(197)=192 3T+E=192
+
+DownMovingSum(197)=0 3T=0
+
+GradedTotSum(197)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(198)=384 3T+E=384
+
+DownMovingSum(198)=48 3T=48
+
+GradedTotSum(198)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(199)=168 3T+E=168
+
+DownMovingSum(199)=24 3T=24
+
+GradedTotSum(199)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(200)=384 3T+E=384
+
+DownMovingSum(200)=48 3T=48
+
+GradedTotSum(200)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(201)=720 3T+E=720
+
+DownMovingSum(201)=144 3T=144
+
+GradedTotSum(201)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(202)=1248 3T+E=1248
+
+DownMovingSum(202)=384 3T=384
+
+GradedTotSum(202)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(203)=72 3T+E=72
+
+DownMovingSum(203)=12 3T=12
+
+GradedTotSum(203)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(204)=168 3T+E=168
+
+DownMovingSum(204)=24 3T=24
+
+GradedTotSum(204)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(205)=168 3T+E=168
+
+DownMovingSum(205)=24 3T=24
+
+GradedTotSum(205)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(206)=384 3T+E=384
+
+DownMovingSum(206)=48 3T=48
+
+GradedTotSum(206)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(207)=720 3T+E=720
+
+DownMovingSum(207)=144 3T=144
+
+GradedTotSum(207)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(208)=324 3T+E=324
+
+DownMovingSum(208)=72 3T=72
+
+GradedTotSum(208)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(209)=720 3T+E=720
+
+DownMovingSum(209)=144 3T=144
+
+GradedTotSum(209)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(210)=1296 3T+E=1296
+
+DownMovingSum(210)=324 3T=324
+
+GradedTotSum(210)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(211)=2160 3T+E=2160
+
+DownMovingSum(211)=720 3T=720
+
+GradedTotSum(211)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(212)=576 3T+E=576
+
+DownMovingSum(212)=192 3T=192
+
+GradedTotSum(212)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(213)=1248 3T+E=1248
+
+DownMovingSum(213)=384 3T=384
+
+GradedTotSum(213)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(214)=2160 3T+E=2160
+
+DownMovingSum(214)=720 3T=720
+
+GradedTotSum(214)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(215)=3456 3T+E=3456
+
+DownMovingSum(215)=1344 3T=1344
+
+GradedTotSum(215)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(216)=5280 3T+E=5280
+
+DownMovingSum(216)=2400 3T=2400
+
+GradedTotSum(216)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(217)=30 3T+E=30
+
+DownMovingSum(217)=6 3T=6
+
+GradedTotSum(217)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(218)=72 3T+E=72
+
+DownMovingSum(218)=12 3T=12
+
+GradedTotSum(218)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(219)=72 3T+E=72
+
+DownMovingSum(219)=12 3T=12
+
+GradedTotSum(219)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(220)=168 3T+E=168
+
+DownMovingSum(220)=24 3T=24
+
+GradedTotSum(220)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(221)=324 3T+E=324
+
+DownMovingSum(221)=72 3T=72
+
+GradedTotSum(221)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(222)=72 3T+E=72
+
+DownMovingSum(222)=12 3T=12
+
+GradedTotSum(222)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(223)=168 3T+E=168
+
+DownMovingSum(223)=24 3T=24
+
+GradedTotSum(223)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(224)=168 3T+E=168
+
+DownMovingSum(224)=24 3T=24
+
+GradedTotSum(224)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(225)=384 3T+E=384
+
+DownMovingSum(225)=48 3T=48
+
+GradedTotSum(225)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(226)=720 3T+E=720
+
+DownMovingSum(226)=144 3T=144
+
+GradedTotSum(226)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(227)=324 3T+E=324
+
+DownMovingSum(227)=72 3T=72
+
+GradedTotSum(227)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(228)=720 3T+E=720
+
+DownMovingSum(228)=144 3T=144
+
+GradedTotSum(228)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(229)=1296 3T+E=1296
+
+DownMovingSum(229)=324 3T=324
+
+GradedTotSum(229)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(230)=2160 3T+E=2160
+
+DownMovingSum(230)=720 3T=720
+
+GradedTotSum(230)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(231)=144 3T+E=144
+
+DownMovingSum(231)=36 3T=36
+
+GradedTotSum(231)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(232)=324 3T+E=324
+
+DownMovingSum(232)=72 3T=72
+
+GradedTotSum(232)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(233)=324 3T+E=324
+
+DownMovingSum(233)=72 3T=72
+
+GradedTotSum(233)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(234)=720 3T+E=720
+
+DownMovingSum(234)=144 3T=144
+
+GradedTotSum(234)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(235)=1296 3T+E=1296
+
+DownMovingSum(235)=324 3T=324
+
+GradedTotSum(235)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(236)=594 3T+E=594
+
+DownMovingSum(236)=162 3T=162
+
+GradedTotSum(236)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(237)=1296 3T+E=1296
+
+DownMovingSum(237)=324 3T=324
+
+GradedTotSum(237)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(238)=2268 3T+E=2268
+
+DownMovingSum(238)=648 3T=648
+
+GradedTotSum(238)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(239)=3672 3T+E=3672
+
+DownMovingSum(239)=1296 3T=1296
+
+GradedTotSum(239)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(240)=1008 3T+E=1008
+
+DownMovingSum(240)=360 3T=360
+
+GradedTotSum(240)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(241)=2160 3T+E=2160
+
+DownMovingSum(241)=720 3T=720
+
+GradedTotSum(241)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(242)=3672 3T+E=3672
+
+DownMovingSum(242)=1296 3T=1296
+
+GradedTotSum(242)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(243)=5760 3T+E=5760
+
+DownMovingSum(243)=2304 3T=2304
+
+GradedTotSum(243)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(244)=8640 3T+E=8640
+
+DownMovingSum(244)=3960 3T=3960
+
+GradedTotSum(244)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(245)=264 3T+E=264
+
+DownMovingSum(245)=96 3T=96
+
+GradedTotSum(245)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(246)=576 3T+E=576
+
+DownMovingSum(246)=192 3T=192
+
+GradedTotSum(246)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(247)=576 3T+E=576
+
+DownMovingSum(247)=192 3T=192
+
+GradedTotSum(247)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(248)=1248 3T+E=1248
+
+DownMovingSum(248)=384 3T=384
+
+GradedTotSum(248)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(249)=2160 3T+E=2160
+
+DownMovingSum(249)=720 3T=720
+
+GradedTotSum(249)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(250)=1008 3T+E=1008
+
+DownMovingSum(250)=360 3T=360
+
+GradedTotSum(250)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(251)=2160 3T+E=2160
+
+DownMovingSum(251)=720 3T=720
+
+GradedTotSum(251)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(252)=3672 3T+E=3672
+
+DownMovingSum(252)=1296 3T=1296
+
+GradedTotSum(252)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(253)=5760 3T+E=5760
+
+DownMovingSum(253)=2304 3T=2304
+
+GradedTotSum(253)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(254)=1632 3T+E=1632
+
+DownMovingSum(254)=672 3T=672
+
+GradedTotSum(254)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(255)=3456 3T+E=3456
+
+DownMovingSum(255)=1344 3T=1344
+
+GradedTotSum(255)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(256)=5760 3T+E=5760
+
+DownMovingSum(256)=2304 3T=2304
+
+GradedTotSum(256)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(257)=8832 3T+E=8832
+
+DownMovingSum(257)=3840 3T=3840
+
+GradedTotSum(257)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(258)=12960 3T+E=12960
+
+DownMovingSum(258)=6240 3T=6240
+
+GradedTotSum(258)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(259)=2520 3T+E=2520
+
+DownMovingSum(259)=1200 3T=1200
+
+GradedTotSum(259)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(260)=5280 3T+E=5280
+
+DownMovingSum(260)=2400 3T=2400
+
+GradedTotSum(260)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(261)=8640 3T+E=8640
+
+DownMovingSum(261)=3960 3T=3960
+
+GradedTotSum(261)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(262)=12960 3T+E=12960
+
+DownMovingSum(262)=6240 3T=6240
+
+GradedTotSum(262)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(263)=18600 3T+E=18600
+
+DownMovingSum(263)=9600 3T=9600
+
+GradedTotSum(263)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(264)=25920 3T+E=25920
+
+DownMovingSum(264)=14400 3T=14400
+
+GradedTotSum(264)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(265)=12 3T+E=12
+
+DownMovingSum(265)=3 3T=3
+
+GradedTotSum(265)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(266)=30 3T+E=30
+
+DownMovingSum(266)=6 3T=6
+
+GradedTotSum(266)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(267)=30 3T+E=30
+
+DownMovingSum(267)=6 3T=6
+
+GradedTotSum(267)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(268)=72 3T+E=72
+
+DownMovingSum(268)=12 3T=12
+
+GradedTotSum(268)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(269)=144 3T+E=144
+
+DownMovingSum(269)=36 3T=36
+
+GradedTotSum(269)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(270)=30 3T+E=30
+
+DownMovingSum(270)=6 3T=6
+
+GradedTotSum(270)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(271)=72 3T+E=72
+
+DownMovingSum(271)=12 3T=12
+
+GradedTotSum(271)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(272)=72 3T+E=72
+
+DownMovingSum(272)=12 3T=12
+
+GradedTotSum(272)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(273)=168 3T+E=168
+
+DownMovingSum(273)=24 3T=24
+
+GradedTotSum(273)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(274)=324 3T+E=324
+
+DownMovingSum(274)=72 3T=72
+
+GradedTotSum(274)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(275)=144 3T+E=144
+
+DownMovingSum(275)=36 3T=36
+
+GradedTotSum(275)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(276)=324 3T+E=324
+
+DownMovingSum(276)=72 3T=72
+
+GradedTotSum(276)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(277)=594 3T+E=594
+
+DownMovingSum(277)=162 3T=162
+
+GradedTotSum(277)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(278)=1008 3T+E=1008
+
+DownMovingSum(278)=360 3T=360
+
+GradedTotSum(278)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(279)=30 3T+E=30
+
+DownMovingSum(279)=6 3T=6
+
+GradedTotSum(279)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(280)=72 3T+E=72
+
+DownMovingSum(280)=12 3T=12
+
+GradedTotSum(280)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(281)=72 3T+E=72
+
+DownMovingSum(281)=12 3T=12
+
+GradedTotSum(281)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(282)=168 3T+E=168
+
+DownMovingSum(282)=24 3T=24
+
+GradedTotSum(282)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(283)=324 3T+E=324
+
+DownMovingSum(283)=72 3T=72
+
+GradedTotSum(283)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(284)=72 3T+E=72
+
+DownMovingSum(284)=12 3T=12
+
+GradedTotSum(284)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(285)=168 3T+E=168
+
+DownMovingSum(285)=24 3T=24
+
+GradedTotSum(285)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(286)=168 3T+E=168
+
+DownMovingSum(286)=24 3T=24
+
+GradedTotSum(286)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(287)=384 3T+E=384
+
+DownMovingSum(287)=48 3T=48
+
+GradedTotSum(287)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(288)=720 3T+E=720
+
+DownMovingSum(288)=144 3T=144
+
+GradedTotSum(288)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(289)=324 3T+E=324
+
+DownMovingSum(289)=72 3T=72
+
+GradedTotSum(289)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(290)=720 3T+E=720
+
+DownMovingSum(290)=144 3T=144
+
+GradedTotSum(290)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(291)=1296 3T+E=1296
+
+DownMovingSum(291)=324 3T=324
+
+GradedTotSum(291)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(292)=2160 3T+E=2160
+
+DownMovingSum(292)=720 3T=720
+
+GradedTotSum(292)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(293)=144 3T+E=144
+
+DownMovingSum(293)=36 3T=36
+
+GradedTotSum(293)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(294)=324 3T+E=324
+
+DownMovingSum(294)=72 3T=72
+
+GradedTotSum(294)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(295)=324 3T+E=324
+
+DownMovingSum(295)=72 3T=72
+
+GradedTotSum(295)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(296)=720 3T+E=720
+
+DownMovingSum(296)=144 3T=144
+
+GradedTotSum(296)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(297)=1296 3T+E=1296
+
+DownMovingSum(297)=324 3T=324
+
+GradedTotSum(297)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(298)=594 3T+E=594
+
+DownMovingSum(298)=162 3T=162
+
+GradedTotSum(298)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(299)=1296 3T+E=1296
+
+DownMovingSum(299)=324 3T=324
+
+GradedTotSum(299)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(300)=2268 3T+E=2268
+
+DownMovingSum(300)=648 3T=648
+
+GradedTotSum(300)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(301)=3672 3T+E=3672
+
+DownMovingSum(301)=1296 3T=1296
+
+GradedTotSum(301)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(302)=1008 3T+E=1008
+
+DownMovingSum(302)=360 3T=360
+
+GradedTotSum(302)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(303)=2160 3T+E=2160
+
+DownMovingSum(303)=720 3T=720
+
+GradedTotSum(303)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(304)=3672 3T+E=3672
+
+DownMovingSum(304)=1296 3T=1296
+
+GradedTotSum(304)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(305)=5760 3T+E=5760
+
+DownMovingSum(305)=2304 3T=2304
+
+GradedTotSum(305)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(306)=8640 3T+E=8640
+
+DownMovingSum(306)=3960 3T=3960
+
+GradedTotSum(306)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(307)=63 3T+E=63
+
+DownMovingSum(307)=18 3T=18
+
+GradedTotSum(307)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(308)=144 3T+E=144
+
+DownMovingSum(308)=36 3T=36
+
+GradedTotSum(308)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(309)=144 3T+E=144
+
+DownMovingSum(309)=36 3T=36
+
+GradedTotSum(309)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(310)=324 3T+E=324
+
+DownMovingSum(310)=72 3T=72
+
+GradedTotSum(310)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(311)=594 3T+E=594
+
+DownMovingSum(311)=162 3T=162
+
+GradedTotSum(311)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(312)=144 3T+E=144
+
+DownMovingSum(312)=36 3T=36
+
+GradedTotSum(312)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(313)=324 3T+E=324
+
+DownMovingSum(313)=72 3T=72
+
+GradedTotSum(313)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(314)=324 3T+E=324
+
+DownMovingSum(314)=72 3T=72
+
+GradedTotSum(314)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(315)=720 3T+E=720
+
+DownMovingSum(315)=144 3T=144
+
+GradedTotSum(315)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(316)=1296 3T+E=1296
+
+DownMovingSum(316)=324 3T=324
+
+GradedTotSum(316)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(317)=594 3T+E=594
+
+DownMovingSum(317)=162 3T=162
+
+GradedTotSum(317)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(318)=1296 3T+E=1296
+
+DownMovingSum(318)=324 3T=324
+
+GradedTotSum(318)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(319)=2268 3T+E=2268
+
+DownMovingSum(319)=648 3T=648
+
+GradedTotSum(319)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(320)=3672 3T+E=3672
+
+DownMovingSum(320)=1296 3T=1296
+
+GradedTotSum(320)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(321)=270 3T+E=270
+
+DownMovingSum(321)=81 3T=81
+
+GradedTotSum(321)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(322)=594 3T+E=594
+
+DownMovingSum(322)=162 3T=162
+
+GradedTotSum(322)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(323)=594 3T+E=594
+
+DownMovingSum(323)=162 3T=162
+
+GradedTotSum(323)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(324)=1296 3T+E=1296
+
+DownMovingSum(324)=324 3T=324
+
+GradedTotSum(324)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(325)=2268 3T+E=2268
+
+DownMovingSum(325)=648 3T=648
+
+GradedTotSum(325)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(326)=1053 3T+E=1053
+
+DownMovingSum(326)=324 3T=324
+
+GradedTotSum(326)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(327)=2268 3T+E=2268
+
+DownMovingSum(327)=648 3T=648
+
+GradedTotSum(327)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(328)=3888 3T+E=3888
+
+DownMovingSum(328)=1215 3T=1215
+
+GradedTotSum(328)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(329)=6156 3T+E=6156
+
+DownMovingSum(329)=2268 3T=2268
+
+GradedTotSum(329)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(330)=1728 3T+E=1728
+
+DownMovingSum(330)=648 3T=648
+
+GradedTotSum(330)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(331)=3672 3T+E=3672
+
+DownMovingSum(331)=1296 3T=1296
+
+GradedTotSum(331)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(332)=6156 3T+E=6156
+
+DownMovingSum(332)=2268 3T=2268
+
+GradedTotSum(332)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(333)=9504 3T+E=9504
+
+DownMovingSum(333)=3888 3T=3888
+
+GradedTotSum(333)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(334)=14040 3T+E=14040
+
+DownMovingSum(334)=6480 3T=6480
+
+GradedTotSum(334)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(335)=468 3T+E=468
+
+DownMovingSum(335)=180 3T=180
+
+GradedTotSum(335)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(336)=1008 3T+E=1008
+
+DownMovingSum(336)=360 3T=360
+
+GradedTotSum(336)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(337)=1008 3T+E=1008
+
+DownMovingSum(337)=360 3T=360
+
+GradedTotSum(337)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(338)=2160 3T+E=2160
+
+DownMovingSum(338)=720 3T=720
+
+GradedTotSum(338)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(339)=3672 3T+E=3672
+
+DownMovingSum(339)=1296 3T=1296
+
+GradedTotSum(339)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(340)=1728 3T+E=1728
+
+DownMovingSum(340)=648 3T=648
+
+GradedTotSum(340)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(341)=3672 3T+E=3672
+
+DownMovingSum(341)=1296 3T=1296
+
+GradedTotSum(341)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(342)=6156 3T+E=6156
+
+DownMovingSum(342)=2268 3T=2268
+
+GradedTotSum(342)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(343)=9504 3T+E=9504
+
+DownMovingSum(343)=3888 3T=3888
+
+GradedTotSum(343)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(344)=2736 3T+E=2736
+
+DownMovingSum(344)=1152 3T=1152
+
+GradedTotSum(344)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(345)=5760 3T+E=5760
+
+DownMovingSum(345)=2304 3T=2304
+
+GradedTotSum(345)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(346)=9504 3T+E=9504
+
+DownMovingSum(346)=3888 3T=3888
+
+GradedTotSum(346)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(347)=14400 3T+E=14400
+
+DownMovingSum(347)=6336 3T=6336
+
+GradedTotSum(347)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(348)=20880 3T+E=20880
+
+DownMovingSum(348)=10080 3T=10080
+
+GradedTotSum(348)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(349)=4140 3T+E=4140
+
+DownMovingSum(349)=1980 3T=1980
+
+GradedTotSum(349)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(350)=8640 3T+E=8640
+
+DownMovingSum(350)=3960 3T=3960
+
+GradedTotSum(350)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(351)=14040 3T+E=14040
+
+DownMovingSum(351)=6480 3T=6480
+
+GradedTotSum(351)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(352)=20880 3T+E=20880
+
+DownMovingSum(352)=10080 3T=10080
+
+GradedTotSum(352)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(353)=29700 3T+E=29700
+
+DownMovingSum(353)=15300 3T=15300
+
+GradedTotSum(353)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(354)=41040 3T+E=41040
+
+DownMovingSum(354)=22680 3T=22680
+
+GradedTotSum(354)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(355)=120 3T+E=120
+
+DownMovingSum(355)=48 3T=48
+
+GradedTotSum(355)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(356)=264 3T+E=264
+
+DownMovingSum(356)=96 3T=96
+
+GradedTotSum(356)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(357)=264 3T+E=264
+
+DownMovingSum(357)=96 3T=96
+
+GradedTotSum(357)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(358)=576 3T+E=576
+
+DownMovingSum(358)=192 3T=192
+
+GradedTotSum(358)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(359)=1008 3T+E=1008
+
+DownMovingSum(359)=360 3T=360
+
+GradedTotSum(359)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(360)=264 3T+E=264
+
+DownMovingSum(360)=96 3T=96
+
+GradedTotSum(360)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(361)=576 3T+E=576
+
+DownMovingSum(361)=192 3T=192
+
+GradedTotSum(361)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(362)=576 3T+E=576
+
+DownMovingSum(362)=192 3T=192
+
+GradedTotSum(362)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(363)=1248 3T+E=1248
+
+DownMovingSum(363)=384 3T=384
+
+GradedTotSum(363)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(364)=2160 3T+E=2160
+
+DownMovingSum(364)=720 3T=720
+
+GradedTotSum(364)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(365)=1008 3T+E=1008
+
+DownMovingSum(365)=360 3T=360
+
+GradedTotSum(365)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(366)=2160 3T+E=2160
+
+DownMovingSum(366)=720 3T=720
+
+GradedTotSum(366)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(367)=3672 3T+E=3672
+
+DownMovingSum(367)=1296 3T=1296
+
+GradedTotSum(367)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(368)=5760 3T+E=5760
+
+DownMovingSum(368)=2304 3T=2304
+
+GradedTotSum(368)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(369)=468 3T+E=468
+
+DownMovingSum(369)=180 3T=180
+
+GradedTotSum(369)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(370)=1008 3T+E=1008
+
+DownMovingSum(370)=360 3T=360
+
+GradedTotSum(370)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(371)=1008 3T+E=1008
+
+DownMovingSum(371)=360 3T=360
+
+GradedTotSum(371)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(372)=2160 3T+E=2160
+
+DownMovingSum(372)=720 3T=720
+
+GradedTotSum(372)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(373)=3672 3T+E=3672
+
+DownMovingSum(373)=1296 3T=1296
+
+GradedTotSum(373)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(374)=1728 3T+E=1728
+
+DownMovingSum(374)=648 3T=648
+
+GradedTotSum(374)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(375)=3672 3T+E=3672
+
+DownMovingSum(375)=1296 3T=1296
+
+GradedTotSum(375)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(376)=6156 3T+E=6156
+
+DownMovingSum(376)=2268 3T=2268
+
+GradedTotSum(376)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(377)=9504 3T+E=9504
+
+DownMovingSum(377)=3888 3T=3888
+
+GradedTotSum(377)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(378)=2736 3T+E=2736
+
+DownMovingSum(378)=1152 3T=1152
+
+GradedTotSum(378)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(379)=5760 3T+E=5760
+
+DownMovingSum(379)=2304 3T=2304
+
+GradedTotSum(379)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(380)=9504 3T+E=9504
+
+DownMovingSum(380)=3888 3T=3888
+
+GradedTotSum(380)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(381)=14400 3T+E=14400
+
+DownMovingSum(381)=6336 3T=6336
+
+GradedTotSum(381)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(382)=20880 3T+E=20880
+
+DownMovingSum(382)=10080 3T=10080
+
+GradedTotSum(382)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(383)=768 3T+E=768
+
+DownMovingSum(383)=336 3T=336
+
+GradedTotSum(383)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(384)=1632 3T+E=1632
+
+DownMovingSum(384)=672 3T=672
+
+GradedTotSum(384)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(385)=1632 3T+E=1632
+
+DownMovingSum(385)=672 3T=672
+
+GradedTotSum(385)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(386)=3456 3T+E=3456
+
+DownMovingSum(386)=1344 3T=1344
+
+GradedTotSum(386)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(387)=5760 3T+E=5760
+
+DownMovingSum(387)=2304 3T=2304
+
+GradedTotSum(387)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(388)=2736 3T+E=2736
+
+DownMovingSum(388)=1152 3T=1152
+
+GradedTotSum(388)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(389)=5760 3T+E=5760
+
+DownMovingSum(389)=2304 3T=2304
+
+GradedTotSum(389)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(390)=9504 3T+E=9504
+
+DownMovingSum(390)=3888 3T=3888
+
+GradedTotSum(390)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(391)=14400 3T+E=14400
+
+DownMovingSum(391)=6336 3T=6336
+
+GradedTotSum(391)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(392)=4224 3T+E=4224
+
+DownMovingSum(392)=1920 3T=1920
+
+GradedTotSum(392)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(393)=8832 3T+E=8832
+
+DownMovingSum(393)=3840 3T=3840
+
+GradedTotSum(393)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(394)=14400 3T+E=14400
+
+DownMovingSum(394)=6336 3T=6336
+
+GradedTotSum(394)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(395)=21504 3T+E=21504
+
+DownMovingSum(395)=9984 3T=9984
+
+GradedTotSum(395)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(396)=30720 3T+E=30720
+
+DownMovingSum(396)=15360 3T=15360
+
+GradedTotSum(396)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(397)=6240 3T+E=6240
+
+DownMovingSum(397)=3120 3T=3120
+
+GradedTotSum(397)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(398)=12960 3T+E=12960
+
+DownMovingSum(398)=6240 3T=6240
+
+GradedTotSum(398)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(399)=20880 3T+E=20880
+
+DownMovingSum(399)=10080 3T=10080
+
+GradedTotSum(399)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(400)=30720 3T+E=30720
+
+DownMovingSum(400)=15360 3T=15360
+
+GradedTotSum(400)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(401)=43200 3T+E=43200
+
+DownMovingSum(401)=22800 3T=22800
+
+GradedTotSum(401)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(402)=59040 3T+E=59040
+
+DownMovingSum(402)=33120 3T=33120
+
+GradedTotSum(402)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(403)=1200 3T+E=1200
+
+DownMovingSum(403)=600 3T=600
+
+GradedTotSum(403)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(404)=2520 3T+E=2520
+
+DownMovingSum(404)=1200 3T=1200
+
+GradedTotSum(404)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(405)=2520 3T+E=2520
+
+DownMovingSum(405)=1200 3T=1200
+
+GradedTotSum(405)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(406)=5280 3T+E=5280
+
+DownMovingSum(406)=2400 3T=2400
+
+GradedTotSum(406)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(407)=8640 3T+E=8640
+
+DownMovingSum(407)=3960 3T=3960
+
+GradedTotSum(407)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(408)=4140 3T+E=4140
+
+DownMovingSum(408)=1980 3T=1980
+
+GradedTotSum(408)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(409)=8640 3T+E=8640
+
+DownMovingSum(409)=3960 3T=3960
+
+GradedTotSum(409)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(410)=14040 3T+E=14040
+
+DownMovingSum(410)=6480 3T=6480
+
+GradedTotSum(410)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(411)=20880 3T+E=20880
+
+DownMovingSum(411)=10080 3T=10080
+
+GradedTotSum(411)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(412)=6240 3T+E=6240
+
+DownMovingSum(412)=3120 3T=3120
+
+GradedTotSum(412)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(413)=12960 3T+E=12960
+
+DownMovingSum(413)=6240 3T=6240
+
+GradedTotSum(413)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(414)=20880 3T+E=20880
+
+DownMovingSum(414)=10080 3T=10080
+
+GradedTotSum(414)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(415)=30720 3T+E=30720
+
+DownMovingSum(415)=15360 3T=15360
+
+GradedTotSum(415)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(416)=43200 3T+E=43200
+
+DownMovingSum(416)=22800 3T=22800
+
+GradedTotSum(416)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(417)=9000 3T+E=9000
+
+DownMovingSum(417)=4800 3T=4800
+
+GradedTotSum(417)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(418)=18600 3T+E=18600
+
+DownMovingSum(418)=9600 3T=9600
+
+GradedTotSum(418)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(419)=29700 3T+E=29700
+
+DownMovingSum(419)=15300 3T=15300
+
+GradedTotSum(419)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(420)=43200 3T+E=43200
+
+DownMovingSum(420)=22800 3T=22800
+
+GradedTotSum(420)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(421)=60000 3T+E=60000
+
+DownMovingSum(421)=33000 3T=33000
+
+GradedTotSum(421)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(422)=81000 3T+E=81000
+
+DownMovingSum(422)=46800 3T=46800
+
+GradedTotSum(422)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(423)=12600 3T+E=12600
+
+DownMovingSum(423)=7200 3T=7200
+
+GradedTotSum(423)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(424)=25920 3T+E=25920
+
+DownMovingSum(424)=14400 3T=14400
+
+GradedTotSum(424)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(425)=41040 3T+E=41040
+
+DownMovingSum(425)=22680 3T=22680
+
+GradedTotSum(425)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(426)=59040 3T+E=59040
+
+DownMovingSum(426)=33120 3T=33120
+
+GradedTotSum(426)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(427)=81000 3T+E=81000
+
+DownMovingSum(427)=46800 3T=46800
+
+GradedTotSum(427)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(428)=108000 3T+E=108000
+
+DownMovingSum(428)=64800 3T=64800
+
+GradedTotSum(428)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(429)=141120 3T+E=141120
+
+DownMovingSum(429)=88200 3T=88200
+
+GradedTotSum(429)=0 GradedEdgeCount=0
+
+
+
+UpMovingSumAllPaths=1891890 3T+E=1891890
+
+DownMovingSumAllPaths=945945 3T=945945
+
+GradedTotSumAllPaths=-21 GradededgecountAllPaths=-21
+
+3*1/15 (2 p - 1)!! Binomial[p, 3](*3T from induction hypothesis*)
+
+3*1/15 (2 p - 1)!! Binomial[p, 3] + (1/
+  3) (2 p - 1)!! Binomial[p, 2](*3T+E from induction hypothesis + 
+  Riordan-Touchard*)
+
+945945
+
+1891890
+
+1/15 (2 p + 1)!! Binomial[p, 
+  2](*probe matrix sum from induction hypothesis*)
+\
+upMovingSumAllPaths + downMovingSumAllPaths
+
+2837835
+
+2837835
+
+-Binomial[p, 2](*probe matrix sum from induction*)
+
+-21
