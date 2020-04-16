@@ -1,0 +1,574 @@
+k = 0;
+Clear[t1, t2, t3, t4, t5, Pairs, Dyck, probe];
+p = 5;
+twop = 2 p;
+Dyck = ConstantArray[0, {(twop - 1)!!, twop}];
+probe = ConstantArray[0, {(twop - 1)!!, p, twop}];
+at = ConstantArray[0, twop];
+at[[1]] = 1;
+For[l1 = 2, l1 < twop + 1, l1++,
+  at[[l1]] = 1;
+      t1[1, l1] = {1, l1};
+  If[l1 == 2, l2 = 3, l2 = 2];
+  at[[l2]] = 1;
+      For [l3 = l2 + 1, l3 < twop + 1, l3++,
+       If [l3 != l1,
+     at[[l3]] = 1;
+           t2[l2, l3] = {l2, l3};
+     it = 0;
+     at[[l1]] = 1; at[[l2]] = 1; at[[l3]] = 1;
+     For  [kt = 1, kt < twop + 1, kt++,
+      If [it == 0, l4 = kt];
+      If[at[[kt]] == 0, it = 1];
+      ];
+     at[[l4]] = 1;
+     For [l5 = l4 + 1, l5 < twop + 1, l5++,
+          If [l5 != l1 && l5 != l2 && l5 != l3,
+              t3[l4, l5] = {l4, l5};
+        at[[l1]] = 1; at[[l2]] = 1; at[[l3]] = 1; at[[l4]] = 1; 
+        at[[l5]] = 1;
+        it = 0;
+        (**Print[at[[1]],at[[2]],at[[3]],at[[4]],at[[5]],at[[6]],at[[
+        7]]];**)
+        For  [kt = 1, kt < twop + 1, kt++,
+         If [it == 0, l6 = kt];
+         If[at[[kt]] == 0, it = 1];
+         ];
+        at[[l6]] = 1;
+        For [l7 = l6 + 1, l7 < twop + 1, l7++,
+             
+         If [l7 != l1 && l7 != l2 && l7 != l3 && l7 != l4 && 
+            l7 != l5,
+                 t4[l6, l7] = {l6, l7};
+           at[[l1]] = 1; at[[l2]] = 1; at[[l3]] = 1; at[[l4]] = 1; 
+           at[[l5]] = 1; at[[l6]] = 1; at[[l7]] = 1;
+           it = 0;
+           For  [kt = 1, kt < twop + 1, kt++,
+            If [it == 0, l8 = kt];
+            If[at[[kt]] == 0, it = 1];
+            ];
+           at[[l8]] = 1;
+           For [l9 = l8 + 1, l9 < twop + 1, l9++,
+                
+            If [l9 != l1 && l9 != l2 && l9 != l3 && l9 != l4 && 
+               l9 != l5 && l9 != l6 && l9 != l7,
+                    t5[l8, l9] = {l8, l9};
+              k = k + 1;
+              (**Print[" k = ",k,"  ", l1,l2,l3,l4,l5,l6,l7];**)
+     
+                       
+              
+              Pairs[k] = {t1[1, l1], t2[l2, l3], t3[l4, l5], 
+                t4[l6, l7], t5[l8, l9]};
+              For[i = 1, i < twop + 1, i++,
+               dktemp = 0;
+               For[j = 1, j < p + 1, j++,
+                
+                If[Pairs[k][[j]][[1]] <= i < Pairs[k][[j]][[2]], 
+                 dktemp = dktemp + 1];
+                
+                If[Pairs[k][[j]][[1]] <= i < Pairs[k][[j]][[2]], 
+                 probe[[k, j, i]] = 1];
+                ];
+               Dyck[[k, i]] = dktemp;
+               ];
+              For[i = 1, i < twop + 1, i++,
+               dktemp = 0;
+               For[j = 1, j < p + 1, j++,
+                
+                If[Pairs[k][[j]][[1]] <= i < Pairs[k][[j]][[2]], 
+                  dktemp = dktemp + 1];
+                ];
+               Dyck[[k, i]] = dktemp;
+               ];
+              at = ConstantArray[0, twop]; at[[1]] = 1;
+              ];];];];];];];];];
+possiblePaths = DeleteDuplicates[Dyck]
+k
+
+{{1, 0, 1, 0, 1, 0, 1, 0, 1, 0}, {1, 0, 1, 0, 1, 0, 1, 2, 1, 0}, {1, 
+  0, 1, 0, 1, 2, 1, 0, 1, 0}, {1, 0, 1, 0, 1, 2, 1, 2, 1, 0}, {1, 0, 
+  1, 0, 1, 2, 3, 2, 1, 0}, {1, 0, 1, 2, 1, 0, 1, 0, 1, 0}, {1, 0, 1, 
+  2, 1, 0, 1, 2, 1, 0}, {1, 0, 1, 2, 1, 2, 1, 0, 1, 0}, {1, 0, 1, 2, 
+  1, 2, 1, 2, 1, 0}, {1, 0, 1, 2, 1, 2, 3, 2, 1, 0}, {1, 0, 1, 2, 3, 
+  2, 1, 0, 1, 0}, {1, 0, 1, 2, 3, 2, 1, 2, 1, 0}, {1, 0, 1, 2, 3, 2, 
+  3, 2, 1, 0}, {1, 0, 1, 2, 3, 4, 3, 2, 1, 0}, {1, 2, 1, 0, 1, 0, 1, 
+  0, 1, 0}, {1, 2, 1, 0, 1, 0, 1, 2, 1, 0}, {1, 2, 1, 0, 1, 2, 1, 0, 
+  1, 0}, {1, 2, 1, 0, 1, 2, 1, 2, 1, 0}, {1, 2, 1, 0, 1, 2, 3, 2, 1, 
+  0}, {1, 2, 1, 2, 1, 0, 1, 0, 1, 0}, {1, 2, 1, 2, 1, 0, 1, 2, 1, 
+  0}, {1, 2, 1, 2, 1, 2, 1, 0, 1, 0}, {1, 2, 1, 2, 1, 2, 1, 2, 1, 
+  0}, {1, 2, 1, 2, 1, 2, 3, 2, 1, 0}, {1, 2, 1, 2, 3, 2, 1, 0, 1, 
+  0}, {1, 2, 1, 2, 3, 2, 1, 2, 1, 0}, {1, 2, 1, 2, 3, 2, 3, 2, 1, 
+  0}, {1, 2, 1, 2, 3, 4, 3, 2, 1, 0}, {1, 2, 3, 2, 1, 0, 1, 0, 1, 
+  0}, {1, 2, 3, 2, 1, 0, 1, 2, 1, 0}, {1, 2, 3, 2, 1, 2, 1, 0, 1, 
+  0}, {1, 2, 3, 2, 1, 2, 1, 2, 1, 0}, {1, 2, 3, 2, 1, 2, 3, 2, 1, 
+  0}, {1, 2, 3, 2, 3, 2, 1, 0, 1, 0}, {1, 2, 3, 2, 3, 2, 1, 2, 1, 
+  0}, {1, 2, 3, 2, 3, 2, 3, 2, 1, 0}, {1, 2, 3, 2, 3, 4, 3, 2, 1, 
+  0}, {1, 2, 3, 4, 3, 2, 1, 0, 1, 0}, {1, 2, 3, 4, 3, 2, 1, 2, 1, 
+  0}, {1, 2, 3, 4, 3, 2, 3, 2, 1, 0}, {1, 2, 3, 4, 3, 4, 3, 2, 1, 
+  0}, {1, 2, 3, 4, 5, 4, 3, 2, 1, 0}}
+
+945
+
+p
+
+5
+
+adj = ConstantArray[0, {(twop - 1)!!, p, p}];(*adjacency matrix*)
+
+edgeAndtriangle = 
+  ConstantArray[
+   0, {(twop - 1)!!, 1, 2}];(*list of {# of edges, # of triangles}*)
+
+For[c = 1, c < (twop - 1)!! + 1, c++,
+  For[i = 1, i < p + 1, i++,
+   For[j = i + 1, j < p + 1, j++,
+     crossingtemp = 0;
+     temp1 = Pairs[c][[i]][[2]];
+     temp2 = Pairs[c][[j]][[1]];
+     temp3 = Pairs[c][[j]][[2]];
+     If[temp1 > temp2, crossingtemp = crossingtemp + 1];
+     If[temp1 > temp3, crossingtemp = crossingtemp + 1];
+     crossingtemp = Mod[crossingtemp, 2];
+     adj[[c, i, j]] = crossingtemp;
+     ];];
+  adj[[c]] = adj[[c]] + Transpose[adj[[c]]];
+  edgeAndtriangle[[c]] = {1/2 Tr[adj[[c]].adj[[c]]], 
+    1/6 Tr[adj[[c]].adj[[c]].adj[[c]]]}; ];
+
+
+upMovingSumAllPaths = 0;
+downMovingSumAllPaths = 0;
+gradedTotSumAllPaths = 0;
+trianglecountAllPaths = 0;
+edgecountAllPaths = 0;
+gradededgecountAllPaths = 0;
+For[m = 1, m < Length[possiblePaths] + 1, m++,
+  pathnumbers = ConstantArray[0, twop];
+  trianglecount = 0;
+  edgecount = 0;
+  gradedPathnumbers = ConstantArray[0, twop];
+  gradededgecount = 0;
+  upMovingSum = 0;
+  downMovingSum = 0;
+  gradedTotSum = 0;
+  For[k = 1, k < (twop - 1)!! + 1, k++,
+   If[Dyck[[k]] == possiblePaths[[m]],
+     For[i = 1, i < twop + 1, i++,
+      pathnumbers[[i]] = 
+       pathnumbers[[i]] + 
+        1/2 ({probe[[k, All, i]]}.adj[[
+             k]].Transpose[{probe[[k, All, i]]}])[[1, 1]];
+      gradedPathnumbers[[i]] = 
+       gradedPathnumbers[[
+         i]] + (-1)^(({probe[[k, All, 
+                 i]]}.Transpose[{probe[[k, All, i]]}])[[1, 1]] + 
+            edgeAndtriangle[[k, 1]])*1/
+         2 ({probe[[k, All, i]]}.adj[[
+             k]].Transpose[{probe[[k, All, i]]}])[[1, 1]];];
+     trianglecount = trianglecount + edgeAndtriangle[[k]][[2]];
+     edgecount = edgecount + edgeAndtriangle[[k]][[1]];
+     gradededgecount = 
+      gradededgecount + (-1)^(edgeAndtriangle[[k, 1]])*
+        edgeAndtriangle[[k, 1]];
+     ];];
+  For[i = 1, i < twop, i++,
+   If[possiblePaths[[m, i]] < possiblePaths[[m, i + 1]], 
+     upMovingSum = upMovingSum + pathnumbers[[i + 1]], 
+     downMovingSum = downMovingSum + pathnumbers[[i + 1]]]
+    ;];
+  gradedTotSum = Sum[gradedPathnumbers[[i]], {i, 1, twop}];
+  upMovingSumAllPaths = upMovingSumAllPaths + upMovingSum;
+  downMovingSumAllPaths = downMovingSumAllPaths + downMovingSum;
+  gradedTotSumAllPaths = gradedTotSumAllPaths + gradedTotSum;
+  trianglecountAllPaths = trianglecountAllPaths + trianglecount;
+  edgecountAllPaths = edgecountAllPaths + edgecount;
+  gradededgecountAllPaths = 
+   gradededgecountAllPaths + gradededgecount;
+  (*Print["DyckPath","(",m,")","=",possiblePaths[[m]]]
+  Print["PathNumbers","(",m,")","=",pathnumbers]
+  Print["EdgeCount","(",m,")","=",edgecount]
+  Print["TriangleCount","(",m,")","=",trianglecount]*)
+  
+  Print["UpMovingSum", "(", m, ")", "=", upMovingSum, " 3T+E=", 
+    3 trianglecount + edgecount]
+   Print["DownMovingSum", "(", m, ")", "=", downMovingSum, " 3T=", 
+    3 trianglecount]
+   (*Print["GradedPathNumbers","(",m,")","=",gradedPathnumbers]
+   Print["GradedEdgeCount","(",m,")","=",gradededgecount]*)
+   
+   Print["GradedTotSum", "(", m, ")", "=", gradedTotSum, 
+    " GradedEdgeCount=", gradededgecount]
+   Print[""]
+  ];
+Print["UpMovingSumAllPaths=", upMovingSumAllPaths, " 3T+E=", 
+ 3*trianglecountAllPaths + edgecountAllPaths]
+Print["DownMovingSumAllPaths=", downMovingSumAllPaths, " 3T=", 
+ 3*trianglecountAllPaths]
+Print["GradedTotSumAllPaths=", gradedTotSumAllPaths, " \
+GradededgecountAllPaths=", gradededgecountAllPaths]
+
+UpMovingSum(1)=0 3T+E=0
+
+DownMovingSum(1)=0 3T=0
+
+GradedTotSum(1)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(2)=1 3T+E=1
+
+DownMovingSum(2)=0 3T=0
+
+GradedTotSum(2)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(3)=1 3T+E=1
+
+DownMovingSum(3)=0 3T=0
+
+GradedTotSum(3)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(4)=4 3T+E=4
+
+DownMovingSum(4)=0 3T=0
+
+GradedTotSum(4)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(5)=12 3T+E=12
+
+DownMovingSum(5)=3 3T=3
+
+GradedTotSum(5)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(6)=1 3T+E=1
+
+DownMovingSum(6)=0 3T=0
+
+GradedTotSum(6)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(7)=4 3T+E=4
+
+DownMovingSum(7)=0 3T=0
+
+GradedTotSum(7)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(8)=4 3T+E=4
+
+DownMovingSum(8)=0 3T=0
+
+GradedTotSum(8)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(9)=12 3T+E=12
+
+DownMovingSum(9)=0 3T=0
+
+GradedTotSum(9)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(10)=30 3T+E=30
+
+DownMovingSum(10)=6 3T=6
+
+GradedTotSum(10)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(11)=12 3T+E=12
+
+DownMovingSum(11)=3 3T=3
+
+GradedTotSum(11)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(12)=30 3T+E=30
+
+DownMovingSum(12)=6 3T=6
+
+GradedTotSum(12)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(13)=63 3T+E=63
+
+DownMovingSum(13)=18 3T=18
+
+GradedTotSum(13)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(14)=120 3T+E=120
+
+DownMovingSum(14)=48 3T=48
+
+GradedTotSum(14)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(15)=1 3T+E=1
+
+DownMovingSum(15)=0 3T=0
+
+GradedTotSum(15)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(16)=4 3T+E=4
+
+DownMovingSum(16)=0 3T=0
+
+GradedTotSum(16)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(17)=4 3T+E=4
+
+DownMovingSum(17)=0 3T=0
+
+GradedTotSum(17)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(18)=12 3T+E=12
+
+DownMovingSum(18)=0 3T=0
+
+GradedTotSum(18)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(19)=30 3T+E=30
+
+DownMovingSum(19)=6 3T=6
+
+GradedTotSum(19)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(20)=4 3T+E=4
+
+DownMovingSum(20)=0 3T=0
+
+GradedTotSum(20)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(21)=12 3T+E=12
+
+DownMovingSum(21)=0 3T=0
+
+GradedTotSum(21)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(22)=12 3T+E=12
+
+DownMovingSum(22)=0 3T=0
+
+GradedTotSum(22)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(23)=32 3T+E=32
+
+DownMovingSum(23)=0 3T=0
+
+GradedTotSum(23)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(24)=72 3T+E=72
+
+DownMovingSum(24)=12 3T=12
+
+GradedTotSum(24)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(25)=30 3T+E=30
+
+DownMovingSum(25)=6 3T=6
+
+GradedTotSum(25)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(26)=72 3T+E=72
+
+DownMovingSum(26)=12 3T=12
+
+GradedTotSum(26)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(27)=144 3T+E=144
+
+DownMovingSum(27)=36 3T=36
+
+GradedTotSum(27)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(28)=264 3T+E=264
+
+DownMovingSum(28)=96 3T=96
+
+GradedTotSum(28)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(29)=12 3T+E=12
+
+DownMovingSum(29)=3 3T=3
+
+GradedTotSum(29)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(30)=30 3T+E=30
+
+DownMovingSum(30)=6 3T=6
+
+GradedTotSum(30)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(31)=30 3T+E=30
+
+DownMovingSum(31)=6 3T=6
+
+GradedTotSum(31)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(32)=72 3T+E=72
+
+DownMovingSum(32)=12 3T=12
+
+GradedTotSum(32)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(33)=144 3T+E=144
+
+DownMovingSum(33)=36 3T=36
+
+GradedTotSum(33)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(34)=63 3T+E=63
+
+DownMovingSum(34)=18 3T=18
+
+GradedTotSum(34)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(35)=144 3T+E=144
+
+DownMovingSum(35)=36 3T=36
+
+GradedTotSum(35)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(36)=270 3T+E=270
+
+DownMovingSum(36)=81 3T=81
+
+GradedTotSum(36)=-1 GradedEdgeCount=-1
+
+
+
+UpMovingSum(37)=468 3T+E=468
+
+DownMovingSum(37)=180 3T=180
+
+GradedTotSum(37)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(38)=120 3T+E=120
+
+DownMovingSum(38)=48 3T=48
+
+GradedTotSum(38)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(39)=264 3T+E=264
+
+DownMovingSum(39)=96 3T=96
+
+GradedTotSum(39)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(40)=468 3T+E=468
+
+DownMovingSum(40)=180 3T=180
+
+GradedTotSum(40)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(41)=768 3T+E=768
+
+DownMovingSum(41)=336 3T=336
+
+GradedTotSum(41)=0 GradedEdgeCount=0
+
+
+
+UpMovingSum(42)=1200 3T+E=1200
+
+DownMovingSum(42)=600 3T=600
+
+GradedTotSum(42)=0 GradedEdgeCount=0
+
+
+
+UpMovingSumAllPaths=5040 3T+E=5040
+
+DownMovingSumAllPaths=1890 3T=1890
+
+GradedTotSumAllPaths=-10 GradededgecountAllPaths=-10
+
+3*1/15 (2 p - 1)!! Binomial[p, 3](*3T from induction hypothesis*)
+
+3*1/15 (2 p - 1)!! Binomial[p, 3] + (1/
+  3) (2 p - 1)!! Binomial[p, 2](*3T+E from induction hypothesis + 
+  Riordan-Touchard*)
+
+1890
+
+5040
+
+1/15 (2 p + 1)!! Binomial[p, 
+  2](*probe matrix sum from induction hypothesis*)
+\
+upMovingSumAllPaths + downMovingSumAllPaths
+
+6930
+
+6930
+
+-Binomial[p, 2](*probe matrix sum from induction hypothesis*)
+
+-10
