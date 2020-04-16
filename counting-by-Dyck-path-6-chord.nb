@@ -1,0 +1,123 @@
+k = 0;
+Clear[t1, t2, t3, t4, t5, t6, at, Pairs];
+at = ConstantArray[0, 12];
+at[[1]] = 1;
+For[l1 = 2, l1 < 13, l1++,
+ at[[l1]] = 1;
+     t1[1, l1] = {1, l1};
+ If[l1 == 2, l2 = 3, l2 = 2];
+ at[[l2]] = 1;
+     For [l3 = l2 + 1, l3 < 13, l3++,
+      If [l3 != l1,
+    at[[l3]] = 1;
+          t2[l2, l3] = {l2, l3};
+    it = 0;
+    at[[l1]] = 1; at[[l2]] = 1; at[[l3]] = 1;
+    For  [kt = 1, kt < 13, kt++,
+     If [it == 0, l4 = kt];
+     If[at[[kt]] == 0, it = 1];
+     ];
+    at[[l4]] = 1;
+    For [l5 = l4 + 1, l5 < 13, l5++,
+         If [l5 != l1 && l5 != l2 && l5 != l3,
+             t3[l4, l5] = {l4, l5};
+       at[[l1]] = 1; at[[l2]] = 1; at[[l3]] = 1; at[[l4]] = 1; 
+       at[[l5]] = 1;
+       it = 0;
+       (**Print[at[[1]],at[[2]],at[[3]],at[[4]],at[[5]],at[[6]],at[[
+       7]]];**)
+       For  [kt = 1, kt < 13, kt++,
+        If [it == 0, l6 = kt];
+        If[at[[kt]] == 0, it = 1];
+        ];
+       at[[l6]] = 1;
+       For [l7 = l6 + 1, l7 < 13, l7++,
+            
+        If [l7 != l1 && l7 != l2 && l7 != l3 && l7 != l4 && l7 != l5,
+                t4[l6, l7] = {l6, l7};
+          at[[l1]] = 1; at[[l2]] = 1; at[[l3]] = 1; at[[l4]] = 1; 
+          at[[l5]] = 1; at[[l6]] = 1; at[[l7]] = 1;
+          it = 0;
+          For  [kt = 1, kt < 13, kt++,
+           If [it == 0, l8 = kt];
+           If[at[[kt]] == 0, it = 1];
+           ];
+          at[[l8]] = 1;
+          For [l9 = l8 + 1, l9 < 13, l9++,
+               
+           If [l9 != l1 && l9 != l2 && l9 != l3 && l9 != l4 && 
+              l9 != l5 && l9 != l6 && l9 != l7,
+                   t5[l8, l9] = {l8, l9};
+             at[[l1]] = 1; at[[l2]] = 1; at[[l3]] = 1; at[[l4]] = 1; 
+             at[[l5]] = 1; at[[l6]] = 1; at[[l7]] = 1; at[[l8]] = 1; 
+             at[[l9]] = 1;
+             it = 0;
+             For  [kt = 1, kt < 13, kt++,
+              If [it == 0, l10 = kt];
+              If[at[[kt]] == 0, it = 1];
+              ];
+             at[[l10]] = 1;
+             For [l11 = l10 + 1, l11 < 13, l11++,
+               
+              If [l11 != l1 && l11 != l2 && l11 != l3 && l11 != l4 && 
+                 l11 != l5 && l11 != l6 && l11 != l7 && l11 != l8 && 
+                 l11 != l9,
+                      t6[l10, l11] = {l10, l11};
+                k = k + 1;
+                (**Print[" k = ",k,"  ", l1,l2,l3,l4,l5,l6,l7];**)
+   
+                             
+                Pairs[k] = {t1[1, l1], t2[l2, l3], t3[l4, l5], 
+                  t4[l6, l7], t5[l8, l9], t6[l10, l11]};
+                at = ConstantArray[0, 12]; at[[1]] = 1;
+                ];];];];];];];];];];]
+
+p = 6;
+totalcontractions = (2 p - 1)!!;
+adj = ConstantArray[0, {totalcontractions, p, p}];(*adjacency matrix*)
+
+edgeAndTrace4 = 
+  ConstantArray[
+   0, {totalcontractions, 1, 
+    2}];(*list of {# of edges, # of triangles}*)
+
+For[c = 1, c < totalcontractions + 1, c++,
+  For[i = 1, i < p + 1, i++,
+   For[j = i + 1, j < p + 1, j++,
+     crossingtemp = 0;
+     temp1 = Pairs[c][[i]][[2]];
+     temp2 = Pairs[c][[j]][[1]];
+     temp3 = Pairs[c][[j]][[2]];
+     If[temp1 > temp2, crossingtemp = crossingtemp + 1];
+     If[temp1 > temp3, crossingtemp = crossingtemp + 1];
+     crossingtemp = Mod[crossingtemp, 2];
+     adj[[c, i, j]] = crossingtemp;
+     ];];
+  adj[[c]] = adj[[c]] + Transpose[adj[[c]]];
+  edge = 1/2 Tr[adj[[c]].adj[[c]]];
+  triangle = 1/6 Tr[adj[[c]].adj[[c]].adj[[c]]];
+  trace4 = (Tr[adj[[c]].adj[[c]].adj[[c]].adj[[c]]]);
+  edgeAndTrace4[[c]] = {edge, trace4};
+  ];
+EandFourstat = Table[{e, 0}, {e, 0, Binomial[p, 2]}];
+For[c = 1, c < totalcontractions + 1, c++,
+ e = edgeAndTrace4[[c, 1]];
+ four = edgeAndTrace4[[c, 2]];
+ EandFourstat[[e + 1, 2]] = EandFourstat[[e + 1, 2]] + four;]
+EandFourstat
+evencount = 0;
+oddcount = 0;
+Do[evencount = evencount + EandFourstat[[i, 2]], {i, 1, 
+  Binomial[p, 2] + 1, 2}]
+Do[oddcount = oddcount + EandFourstat[[i, 2]], {i, 2, 
+  Binomial[p, 2] + 1, 2}]
+evencount + oddcount
+evencount - oddcount
+
+{{0, 0}, {1, 990}, {2, 6600}, {3, 20196}, {4, 40368}, {5, 62082}, {6, 
+  78408}, {7, 84000}, {8, 78696}, {9, 65190}, {10, 47472}, {11, 
+  30372}, {12, 17256}, {13, 8250}, {14, 3000}, {15, 630}}
+
+543510
+
+90
