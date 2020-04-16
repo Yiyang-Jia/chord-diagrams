@@ -1,0 +1,104 @@
+k = 0;
+Clear[t1, t2, t3, t4, t5, P];
+at = ConstantArray[0, 10];
+at[[1]] = 1;
+For[l1 = 2, l1 < 11, l1++,
+  at[[l1]] = 1;
+      t1[1, l1] = {1, l1};
+  If[l1 == 2, l2 = 3, l2 = 2];
+  at[[l2]] = 1;
+      For [l3 = l2 + 1, l3 < 11, l3++,
+       If [l3 != l1,
+     at[[l3]] = 1;
+           t2[l2, l3] = {l2, l3};
+     it = 0;
+     at[[l1]] = 1; at[[l2]] = 1; at[[l3]] = 1;
+     For  [kt = 1, kt < 11, kt++,
+      If [it == 0, l4 = kt];
+      If[at[[kt]] == 0, it = 1];
+      ];
+     at[[l4]] = 1;
+     For [l5 = l4 + 1, l5 < 11, l5++,
+          If [l5 != l1 && l5 != l2 && l5 != l3,
+              t3[l4, l5] = {l4, l5};
+        at[[l1]] = 1; at[[l2]] = 1; at[[l3]] = 1; at[[l4]] = 1; 
+        at[[l5]] = 1;
+        it = 0;
+        (**Print[at[[1]],at[[2]],at[[3]],at[[4]],at[[5]],at[[6]],at[[
+        7]]];**)
+        For  [kt = 1, kt < 11, kt++,
+         If [it == 0, l6 = kt];
+         If[at[[kt]] == 0, it = 1];
+         ];
+        at[[l6]] = 1;
+        For [l7 = l6 + 1, l7 < 11, l7++,
+             
+         If [l7 != l1 && l7 != l2 && l7 != l3 && l7 != l4 && 
+            l7 != l5,
+                 t4[l6, l7] = {l6, l7};
+           at[[l1]] = 1; at[[l2]] = 1; at[[l3]] = 1; at[[l4]] = 1; 
+           at[[l5]] = 1; at[[l6]] = 1; at[[l7]] = 1;
+           it = 0;
+           For  [kt = 1, kt < 11, kt++,
+            If [it == 0, l8 = kt];
+            If[at[[kt]] == 0, it = 1];
+            ];
+           at[[l8]] = 1;
+           For [l9 = l8 + 1, l9 < 11, l9++,
+                
+            If [l9 != l1 && l9 != l2 && l9 != l3 && l9 != l4 && 
+               l9 != l5 && l9 != l6 && l9 != l7,
+                    t5[l8, l9] = {l8, l9};
+              k = k + 1;
+              (**Print[" k = ",k,"  ", l1,l2,l3,l4,l5,l6,l7];**)
+     
+                       
+              Pairs[k] = {t1[1, l1], t2[l2, l3], t3[l4, l5], 
+                t4[l6, l7], t5[l8, l9]};
+              at = ConstantArray[0, 10]; at[[1]] = 1;
+              ];];];];];];];];];
+
+adj = ConstantArray[0, {945, 5, 5}];(*adjacency matrix*)
+
+edgeAndtriangle = 
+  ConstantArray[
+   0, {945, 1, 2}];(*list of {# of edges, # of triangles}*)
+For[c = 1,
+  c < 946, c++,
+ For[i = 1, i < 6, i++,
+  For[j = i + 1, j < 6, j++,
+    crossingtemp = 0;
+    temp1 = Pairs[c][[i]][[2]];
+    temp2 = Pairs[c][[j]][[1]];
+    temp3 = Pairs[c][[j]][[2]];
+    If[temp1 > temp2, crossingtemp = crossingtemp + 1];
+    If[temp1 > temp3, crossingtemp = crossingtemp + 1];
+    crossingtemp = Mod[crossingtemp, 2];
+    adj[[c, i, j]] = crossingtemp;
+    ];];
+ adj[[c]] = adj[[c]] + Transpose[adj[[c]]];
+ edgeAndtriangle[[c]] = {1/2 Tr[adj[[c]].adj[[c]]], 
+   1/6 Tr[adj[[c]].adj[[c]].adj[[c]]]}; 
+ ]
+
+
+EandTstat = Table[{e, 0}, {e, 0, 10}]; For[c = 1, c < 946, c++,
+ e = edgeAndtriangle[[c, 1]];
+ t = edgeAndtriangle[[c, 2]];
+ EandTstat[[e + 1, 2]] = EandTstat[[e + 1, 2]] + t;]
+
+EandTstat
+
+{{0, 0}, {1, 0}, {2, 0}, {3, 45}, {4, 90}, {5, 135}, {6, 140}, {7, 
+  105}, {8, 70}, {9, 35}, {10, 10}}
+
+evencount = 0;
+oddcount = 0;
+Do[evencount = evencount + EandTstat[[i, 2]], {i, 1, 11, 2}]
+Do[oddcount = oddcount + EandTstat[[i, 2]], {i, 2, 11, 2}]
+evencount
+oddcount
+
+310
+
+320
