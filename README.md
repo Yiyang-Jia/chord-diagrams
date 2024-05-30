@@ -3,4 +3,4 @@ My study of chord diagrams is motivated by its relevance to statistical physics 
 
 The central theme is combinatorics, and these are mathematica codes (.nb files).
 
-Some enumeration identities now have simple bijective proofs, by representation of words and degenerate words (see appendix C.2 of my doctor thesis).
+Some enumeration identities now have simple bijective proofs, by representation of words and degenerate words (see appendix C.2 of my doctoral thesis).
